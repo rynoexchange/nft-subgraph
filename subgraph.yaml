@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: RynoNFTMarket
+    network: poa-core
+    source:
+      address: "0xa6095C3c1dbD0A7b9312EeA3517BB5a33ffb169a"
+      abi: RynoNFTMarket
+      startBlock: 24010305
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Collection
+        - Item
+        - Transaction
+      abis:
+        - name: RynoNFTMarket
+          file: ./abis/RynoNFTMarket.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
+        - event: ListingCreated(indexed address,indexed address,uint256,uint256)
+          handler: handleListingCreated
+        - event: ListingRemoved(indexed address,uint256)
+          handler: handleListingRemoved
+        - event: ListingSold(indexed address,indexed address,uint256,uint256)
+          handler: handleListingSold
